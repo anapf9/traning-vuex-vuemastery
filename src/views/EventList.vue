@@ -8,9 +8,11 @@
         Prev Page
       </router-link>
     </template>
+    <template v-if="!(this.eventsTotal < this.page * 3)">
       <router-link :to="{ name: 'event-list', query: { page: page + 1 }}" rel="next">
         Next Page
       </router-link>
+    </template>
   </div>
 </template>
 
@@ -29,7 +31,7 @@ export default {
     })
   },
   computed: {
-    ...mapState(['events']),
+    ...mapState(['events', 'eventsTotal']),
     page () {
       // if no URL query parameters, assume the first page
       return parseInt(this.$route.query.page) || 1
