@@ -26,7 +26,7 @@ export const actions = {
       commit('ADD_EVENT', event)
     })
   },
-  fetchEvent({ commit, getters }, id) {
+  fetchEvent({ commit, getters, dispatch }, id) {
     var event = getters.getEventsById(id)
     if (event) {
       commit('SET_EVENT', event)
@@ -35,20 +35,34 @@ export const actions = {
         .then(response => {
           commit('SET_EVENT', response.data)
         })
-        .catch(error => {
-          console.log('There was an error:', error.response)
+        // .catch(error => {
+        //   console.log('There was an error:', error.response)
+        // })
+        .catch( error => {
+          const notification = {
+            type: 'error',
+            message: 'Tem um  problema na função fetchEvents: ' + error.message
+          }
+          dispatch('notification/add', notification, { root: true })
         })
     }
   },
-  fetchEvents({ commit }, { perPage, page }) {
+  fetchEvents({ commit, dispatch }, { perPage, page }) {
     EventService.getEvents(perPage, page)
       .then(response => {
         console.log('Total de eventos:' + response.headers['x-total-count'])
         commit('SET_EVENTS', response.data)
         commit('SET_EVENTSTOTAL', response.headers['x-total-count'])
       })
-      .catch(error => {
-        console.log('There was an error:', error.response)
+      // .catch(error => {
+      //   console.log('There was an error:', error.response)
+      // })
+      .catch( error => {
+        const notification = {
+          type: 'error',
+          message: 'Tem um  problema na função fetchEvents: ' + error.message
+        }
+        dispatch('notification/add', notification, { root: true })
       })
   }
 }
