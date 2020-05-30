@@ -8,7 +8,7 @@
         Prev Page
       </router-link>
     </template>
-    <template v-if="!(this.eventsTotal < this.page * 3)">
+    <template v-if="this.eventsTotal > this.page * 3">
       <router-link :to="{ name: 'event-list', query: { page: page + 1 }}" rel="next">
         Next Page
       </router-link>

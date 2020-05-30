@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Create an Event</h1>
-
     <form @submit.prevent="createEvent">
       <label>Select a category</label>
       <select v-model="event.category">
@@ -38,13 +37,13 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
 import Datepicker from 'vuejs-datepicker'
+
 export default {
   components: {
     Datepicker
   },
-  data () {
+  data() {
     const times = []
     for (let i = 1; i <= 24; i++) {
       times.push(i + ':00')
@@ -56,24 +55,25 @@ export default {
     }
   },
   methods: {
-    createEvent () {
-      this.$store.dispatch('createEvent', this.event)
-      .then(() => {
-        this.$router.push({
-          name: 'event-show',
-          params: { id: this.event.id }
+    createEvent() {
+      this.$store
+        .dispatch('event/createEvent', this.event)
+        .then(() => {
+          this.$router.push({
+            name: 'event-show',
+            params: { id: this.event.id }
+          })
+          this.event = this.createFreshEventObject()
         })
-        this.event = this.createFreshEventObject()
-      })
-      .catch(() => {
-        console.log('tem algum problema')
-      })
+        .catch(() => {
+          console.log('tem algum problema')
+        })
     },
-    // adionamos este objeto diretamente no data() porque vamos usar esse evento posteriormente para limpar os dados do evento
+    // adicionamos este objeto diretamente no data() porque vamos usar esse evento posteriormente para limpar os dados do evento
     // we'll user this method to clear out our event data
-    createFreshEventObject () {
+    createFreshEventObject() {
       const user = this.$store.state.user.user
-      const id = Math.floor(Math.random() *10000000)
+      const id = Math.floor(Math.random() * 10000000)
 
       return {
         id: id,
@@ -90,9 +90,7 @@ export default {
     }
   },
   // computed: {
-  //   ...mapState([
-  //     'event'
-  //   ]),
+  //   ...mapState(['event'])
   // }
 }
 </script>
