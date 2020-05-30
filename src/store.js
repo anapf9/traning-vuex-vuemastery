@@ -16,23 +16,30 @@ export default new Vuex.Store({
       'food',
       'community'
     ],
-    events: [
-      { id: 1, title: '...', category: '...' },
-      { id: 2, title: '...', category: '...' },
-      { id: 3, title: '...', category: '...' },
-      { id: 4, title: '...', category: '...' }
-    ]
+    events: []
   },
   mutations: {
     ADD_EVENT(state, event) {
       state.events.push(event)
+    },
+    SET_EVENTS(state, events) {
+      state.events = events
     }
   },
-  actions: {
-    createEvent ({commit}, event ) {
+  actions: { 
+    createEvent ({ commit }, event ) {
       EventService.postEvent(event).then(() => {
         commit('ADD_EVENT', event)
 
+      })
+    },
+    fetchEvents({ commit }) {
+      EventService.getEvents()
+      .then(response => {
+        commit('SET_EVENTS', response.data ) 
+      })
+      .catch(error => {
+        console.log('There was an error:', error.response)
       })
     }
   },
