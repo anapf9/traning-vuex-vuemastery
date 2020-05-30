@@ -32,15 +32,20 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapActions } = createNamespacedHelpers('event')
+
 
 export default {
   props: ['id'],
   computed: {
-    ...mapState(['event'])
+    ...mapState(['event']),
   },
   created() {
-    this.$store.dispatch('fetchEvent', this.id)
+    this.fetchEvent(this.id)
+  },
+  methods: {
+    ...mapActions(['fetchEvent'])
   }
 }
 </script>
