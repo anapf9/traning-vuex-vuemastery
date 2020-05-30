@@ -21,10 +21,24 @@ export const mutations = {
   }
 }
 export const actions = {
-  createEvent({ commit }, event) {
-    EventService.postEvent(event).then(() => {
-      commit('ADD_EVENT', event)
-    })
+  createEvent({ commit, dispatch }, event) {
+    EventService.postEvent(event)
+      .then(() => {
+        commit('ADD_EVENT', event)
+        const notification = {
+          type: 'success',
+          message: 'Seu evento foi criado'
+        }
+        dispatch('notification/add', notification, { root: true })
+      })
+      .catch(error => {
+        const notification = {
+          type: 'error',
+          message: 'Teve um problema criado o seu evento: ' + error.message
+        }
+        dispatch('notification/add', notification, { root: true })
+        throw error
+      })
   },
   fetchEvent({ commit, getters, dispatch }, id) {
     var event = getters.getEventsById(id)
@@ -38,7 +52,7 @@ export const actions = {
         // .catch(error => {
         //   console.log('There was an error:', error.response)
         // })
-        .catch( error => {
+        .catch(error => {
           const notification = {
             type: 'error',
             message: 'Tem um  problema na função fetchEvents: ' + error.message
@@ -57,7 +71,7 @@ export const actions = {
       // .catch(error => {
       //   console.log('There was an error:', error.response)
       // })
-      .catch( error => {
+      .catch(error => {
         const notification = {
           type: 'error',
           message: 'Tem um  problema na função fetchEvents: ' + error.message
