@@ -72,7 +72,7 @@ export default {
     // adionamos este objeto diretamente no data() porque vamos usar esse evento posteriormente para limpar os dados do evento
     // we'll user this method to clear out our event data
     createFreshEventObject () {
-      const user = this.$store.state.user
+      const user = this.$store.state.user.user
       const id = Math.floor(Math.random() *10000000)
 
       return {

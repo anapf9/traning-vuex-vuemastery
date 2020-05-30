@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Events Listing</h1>
+    <h1>Events for {{ user.user.name }}</h1>
     <EventCard v-for="event in events" :key="event.id" :event="event" />
     <template v-if="page != 1">
       <!-- For only show page > 1 -->
@@ -31,7 +31,7 @@ export default {
     })
   },
   computed: {
-    ...mapState(['events', 'eventsTotal']),
+    ...mapState(['events', 'eventsTotal', 'user']),
     page () {
       // if no URL query parameters, assume the first page
       return parseInt(this.$route.query.page) || 1
